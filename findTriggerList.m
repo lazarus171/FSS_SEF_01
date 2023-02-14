@@ -3,6 +3,6 @@ function triggerlist = findTriggerList(trigger)
 % corrispondenza dei trigger
 
     soglia = 0.4 * max(trigger);
-    triggerlist = find(trigger >= soglia;
+    triggerlist = find(trigger >= soglia);
 
 end

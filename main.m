@@ -44,7 +44,6 @@ data.durata = time(size(time,2))-time(1);
 %Calcola il tempo di pretrigger in base ai valori presenti nel vettore
 %degli istanti di tempo
 data.pretrigger = time(~time)-time(1);
-% Data = load(DataPath).data;
 
 
 %% Parametri
@@ -53,9 +52,10 @@ T0 = 2560; %Temperatura iniziale per Simulated Annealing
 smpfq = 5000; %Frequenza campionamento eeg e Trigger
 
 
-%% Rimozione canali
-data = removeChannelData(data, ChanlocsPath);
-
+%% Rimozione canali in due passaggi
+%Primo passaggio: filtraggio canali sul vettore dei flags
+[ch_flag, data.canali] = ch_filter(ch_flag, channel);
+%Secondo passaggio: eliminazione effettiva dei dati precedentemente marcati
 
 %% Calcolo della TriggerList
 TriggerList = findTriggerList(data.Trigger);
