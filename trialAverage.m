@@ -1,4 +1,4 @@
-function [data_ave, nave, triggerList] = trialAverage(data, trigger, durata, pretrigger, bas, smpfq, soglia)
+function [data_ave, nave, triggerList] = trialAverage(data, triggerList, durata, pretrigger, bas, smpfq, soglia)
 % Funzione che effettua l'averaging dei dati
 
 %% Inizializzazioni
@@ -7,7 +7,7 @@ function [data_ave, nave, triggerList] = trialAverage(data, trigger, durata, pre
     data_ave = zeros(size(data, 1), nptdurata);
     
 %% Costruzione della triggerList
-    triggerList = findTriggerList(trigger);
+%     triggerList = findTriggerList(triggerList);
     
 %% Mediazione dei dati sui vari trial
     if isempty(bas) == 1

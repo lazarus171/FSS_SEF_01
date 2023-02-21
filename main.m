@@ -30,45 +30,31 @@ end
 
 
 %% Caricamento dati
-%Carica la struct di descrizione dei canali
-channel = load(ChanlocsPath).Channel;
-%Carica il vettore degli istanti di tempo
-time = load(DataPath).Time;
-%Carica il vettore dei flags
-ch_flag = load(DataPath).ChannelFlag;
-%Carica la matrice dei dati registrati
-data.eeg = load(DataPath).F;
-%Calcola la durata in base ai valori presenti nel vettore degli istanti di
-%tempo
-data.durata = time(size(time,2))-time(1);
-%Calcola il tempo di pretrigger in base ai valori presenti nel vettore
-%degli istanti di tempo
-data.pretrigger = time(~time)-time(1);
+run data_load.m;
 
 
 %% Parametri
-lambda = 1000; %Peso relativo del vincolo funzionale rispetto alla Curtosi
-T0 = 2560; %Temperatura iniziale per Simulated Annealing
-smpfq = 5000; %Frequenza campionamento eeg e Trigger
-
+%Carica i parametri nell'apposita struct con la possibilità di modificare i
+%valori di default
+run params_load.m;
 
 %% Rimozione canali in due passaggi
 %Primo passaggio: filtraggio canali sul vettore dei flags
 [ch_flag, data.canali] = ch_filter(ch_flag, channel);
 %Secondo passaggio: eliminazione effettiva dei dati precedentemente marcati
 
+
 %% Calcolo della TriggerList
 TriggerList = findTriggerList(data.Trigger);
 
-
 %% FSS
-[AFS20, WSF20, FS20, RetroProjFS20, w20] = FSS_SEF(data.eeg, TriggerList, data.maxSEF20, data.lowSEF20, data.highSEF20, data.durata, data.pretrigger, data.bas, smpfq, lambda, T0);
-[AFS22, WSF22, FS22, RetroProjFS22, w22] = FSS_SEF(data.eeg, TriggerList, data.maxSEF22, data.lowSEF22, data.highSEF22, data.durata, data.pretrigger, data.bas, smpfq, lambda, T0);
+[AFS20, WSF20, FS20, RetroProjFS20, w20] = FSS_SEF(data.eeg, TriggerList, data.maxSEF20, data.lowSEF20, data.highSEF20, data.durata, data.pretrigger, data.bas, params.smpfq, params.lambda, params.T0);
+[AFS22, WSF22, FS22, RetroProjFS22, w22] = FSS_SEF(data.eeg, TriggerList, data.maxSEF22, data.lowSEF22, data.highSEF22, data.durata, data.pretrigger, data.bas, params.smpfq, params.lambda, params.T0);
 
 
 %% Plot EEG
-[data_ave] = trialAverage(data.eeg/10, data.Trigger, data.durata, data.pretrigger, data.bas, smpfq, 10^5);
-t = (-data.pretrigger) : (1000/smpfq) : (data.durata - data.pretrigger - 1000/smpfq);
+[data_ave] = trialAverage(data.eeg/10, TriggerList, data.durata, data.pretrigger, data.bas, params.smpfq, 10^5);
+t = (-data.pretrigger) : (1000/params.smpfq) : (data.durata - data.pretrigger - 1000/params.smpfq);
 fig_eeg = figure();
 plot(t, data_ave);
 xlim([t(1) t(end)]);
@@ -77,23 +63,23 @@ title('EEG');
 
 
 %% Plot FS
-[FS20ave] = trialAverage(FS20, data.Trigger, data.durata, data.pretrigger, data.bas, smpfq, 2*10^12);
+[FS20ave] = trialAverage(FS20, TriggerList, data.durata, data.pretrigger, data.bas, params.smpfq, 2*10^12);
 fig_FS20ave = figure();
 plot(t, FS20ave);
 
-[FS22ave] = trialAverage(FS22, data.Trigger, data.durata, data.pretrigger, data.bas, smpfq, 2*10^12);
+[FS22ave] = trialAverage(FS22, TriggerList, data.durata, data.pretrigger, data.bas, params.smpfq, 2*10^12);
 fig_FS22ave = figure();
 plot(t, FS22ave);
 
 
 %% Plot Retroprojected FS
-[RetroProjFS20ave] = trialAverage(RetroProjFS20, data.Trigger, data.durata, data.pretrigger, data.bas, smpfq, 2*10^12);
+[RetroProjFS20ave] = trialAverage(RetroProjFS20, TriggerList, data.durata, data.pretrigger, data.bas, params.smpfq, 2*10^12);
 fig_RetroProjFS20ave = figure();
 plot(t, RetroProjFS20ave);
 title('FS20 eeg ave');
 xlim([-data.pretrigger data.durata-data.pretrigger]);
 
-[RetroProjFS22ave] = trialAverage(RetroProjFS22, data.Trigger, data.durata, data.pretrigger, data.bas, smpfq, 2*10^12);
+[RetroProjFS22ave] = trialAverage(RetroProjFS22, TriggerList, data.durata, data.pretrigger, data.bas, params.smpfq, 2*10^12);
 fig_RetroProjFS22ave = figure();
 plot(t, RetroProjFS22ave);
 title('FS22 eeg ave');
@@ -101,8 +87,8 @@ xlim([-data.pretrigger data.durata-data.pretrigger]);
 
 
 %% Topoplot
-fig_FS20topoplot = staticPlotN(data.canali, RetroProjFS20ave, data.maxSEF20, data.pretrigger, smpfq, ChanlocsPath, 0);
-fig_FS22topoplot = staticPlotN(data.canali, RetroProjFS22ave, data.maxSEF22, data.pretrigger, smpfq, ChanlocsPath, 0);
+fig_FS20topoplot = staticPlotN(data.canali, RetroProjFS20ave, data.maxSEF20, data.pretrigger, params.smpfq, ChanlocsPath, 0);
+fig_FS22topoplot = staticPlotN(data.canali, RetroProjFS22ave, data.maxSEF22, data.pretrigger, params.smpfq, ChanlocsPath, 0);
 
 
 %% Salvataggio figure

@@ -4,7 +4,8 @@ clear;
 %Carica le strutture e le variabili dal file appositamente predisposto
 load('struct_setup.mat');
 %Apre la finestra di dialogo per scegliere il file dei dati
-[f_name, f_path] = uigetfile('','Seleziona il file contenente le registrazioni dei dati');
+[f_name, f_path] = uigetfile('','Seleziona il file contenente le registrazioni dei dati',...
+    'D:\brainstorm_db\TutorialCMC\data\Subject01\SubjectCMC_notch_high_abs\data_Left_average_230214_1734.mat');
 %Imposta il valore della variabile DataPath in base alla scelta fatta
 %controllando che la scelta sia valida
 if f_name == 0
@@ -14,7 +15,8 @@ else
 end
 %Apre la finestra di dialogo per scegliere il file dei canali proponendo il
 %file dati come default
-[f_name, f_path] = uigetfile('', 'Seleziona il file contenente la descrizione dei canali', DataPath);
+[f_name, f_path] = uigetfile('', 'Seleziona il file contenente la descrizione dei canali',...
+    'D:\brainstorm_db\TutorialCMC\data\Subject01\SubjectCMC_notch_high_abs\channel_ctf_acc1.mat');
 %Imposta il valore della variabile ChanlocsPath in base alla scelta fatta
 %controllando che la scelta sia valida
 if f_name == 0
