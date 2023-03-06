@@ -40,16 +40,24 @@ run params_load.m;
 
 %% Rimozione canali in due passaggi
 %Primo passaggio: filtraggio canali sul vettore dei flags
-[ch_flag, data.canali] = ch_filter(ch_flag, channel);
+[ch_flag] = ch_filter(ch_flag, channel);
 %Secondo passaggio: eliminazione effettiva dei dati precedentemente marcati
 
 
 %% Calcolo della TriggerList
 TriggerList = findTriggerList(data.Trigger);
 
+%%Pausa
+goon = questdlg('Original code from now on. Continue?', 'Code info', 'Go', 'Stop', 'Stop');
+if goon == 'Stop'
+    return;
+end
+clear goon;
 %% FSS
-[AFS20, WSF20, FS20, RetroProjFS20, w20] = FSS_SEF(data.eeg, TriggerList, data.maxSEF20, data.lowSEF20, data.highSEF20, data.durata, data.pretrigger, data.bas, params.smpfq, params.lambda, params.T0);
-[AFS22, WSF22, FS22, RetroProjFS22, w22] = FSS_SEF(data.eeg, TriggerList, data.maxSEF22, data.lowSEF22, data.highSEF22, data.durata, data.pretrigger, data.bas, params.smpfq, params.lambda, params.T0);
+[AFS20, WSF20, FS20, RetroProjFS20, w20] = FSS_SEF(data.eeg, TriggerList, data.maxSEF20,...
+    data.lowSEF20, data.highSEF20, data.durata, data.pretrigger, data.bas, params.smpfq, params.lambda, params.T0);
+[AFS22, WSF22, FS22, RetroProjFS22, w22] = FSS_SEF(data.eeg, TriggerList, data.maxSEF22,...
+    data.lowSEF22, data.highSEF22, data.durata, data.pretrigger, data.bas, params.smpfq, params.lambda, params.T0);
 
 
 %% Plot EEG

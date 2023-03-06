@@ -1,6 +1,6 @@
 function [Res] = f_obj(w, whiteEEGc, triggerList, maxSEF, lowSEF, highSEF, durata_ms, pretrigger_ms, bas_ms, lambda, smpfq)
 % Funzione obiettivo per FSS con vincolo funzionale S1 :
-% f_obj=J(w'*whiteEEGc+lambda*RF_S1(w'*whiteEEGc)
+% f_obj=J(w'*whiteEEGc)+lambda*RF_S1(w'*whiteEEGc)
     w = w/norm(w);
     evokedActivity = w' * whiteEEGc;
     
@@ -10,11 +10,11 @@ function [Res] = f_obj(w, whiteEEGc, triggerList, maxSEF, lowSEF, highSEF, durat
     Kurtosis = m4/(m2^2)-3;
     
 %% Calcolo del vincolo funzionale
-    durata = round((durata_ms/1000)*smpfq;
+    durata = round((durata_ms/1000)*smpfq);
     pretrigger = round((pretrigger_ms/1000)*smpfq);
     if isempty(bas_ms) == 0
-        bas(1) = round(((pretrigger_ms + bas_ms(1))/1000) * smpfq;
-        bas(2) = round(((pretrigger_ms + bas_ms(2))/1000) * smpfq;
+        bas(1) = round(((pretrigger_ms + bas_ms(1))/1000) * smpfq);
+        bas(2) = round(((pretrigger_ms + bas_ms(2))/1000) * smpfq);
     else
         bas = [];
     end
