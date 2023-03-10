@@ -28,31 +28,12 @@ if (isempty(ChanlocsPath)+isempty(DataPath)) ~= 0
     return;
 end
 
-
-%% Caricamento dati
-run data_load.m;
-
-
-%% Parametri
-%Carica i parametri nell'apposita struct con la possibilità di modificare i
-%valori di default
-run params_load.m;
-
-%% Rimozione canali in due passaggi
-%Primo passaggio: filtraggio canali sul vettore dei flags
-[ch_flag] = ch_filter(ch_flag, channel);
-%Secondo passaggio: eliminazione effettiva dei dati precedentemente marcati
-
-
 %% Calcolo della TriggerList
 TriggerList = findTriggerList(data.Trigger);
 
-%%Pausa
-goon = questdlg('Original code from now on. Continue?', 'Code info', 'Go', 'Stop', 'Stop');
-if goon == 'Stop'
-    return;
-end
-clear goon;
+%% Rimozione canali in due passaggi
+run ch_remove.m;
+
 %% FSS
 [AFS20, WSF20, FS20, RetroProjFS20, w20] = FSS_SEF(data.eeg, TriggerList, data.maxSEF20,...
     data.lowSEF20, data.highSEF20, data.durata, data.pretrigger, data.bas, params.smpfq, params.lambda, params.T0);

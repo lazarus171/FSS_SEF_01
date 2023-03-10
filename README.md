@@ -30,3 +30,18 @@
 -   Modificato il 'main.m' in modo che lanci le funzioni sopra descritte
     anzichè calcolare valori più volte. Corretto fino alla riga 48 compresa
     (Calcolo della trigger list).
+***************************************************************************
+10 marzo 2023
+
+Eseguito restyling generale di funzioni e script modificati e/o creati fino
+a questo punto.
+
+Rieseguito analisi delle dipendenze e allegato lo schema risultante al
+project, nella cartella "doc".
+
+Inserito nella cartella "doc" un abbozzo di lista delle variabili
+utilizzate (può essere non necessaria...).
+
+Inserito nella cartella "Subject_CMC_notch_02" i files ottenuti dal
+tutorial CMC di Brainstorm da usare come dati di test per il codice in
+corso di sviluppo.

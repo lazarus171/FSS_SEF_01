@@ -1,6 +1,5 @@
 function [whiteMatrix, dewhiteMatrix] = pcaWhitening(eeg_c)
-%funzione che calcola le matrici di sbiancamento 'whiteMatrix' e
-%desbiancamento 'dewhiteMatrix' a partire dai dati in X, usando la PCA
+%% Funzione che calcola le matrici di sbiancamento e desbiancamento a partire dai dati in X, usando la PCA
 
 %% Calcolo della matrice delle covarianze
     covarianceMatrix = cov(eeg_c', 1);
@@ -8,7 +7,10 @@ function [whiteMatrix, dewhiteMatrix] = pcaWhitening(eeg_c)
 %% Calcolo degli autovalori e relativi autovettori della matrice delle covarianze
     [E, D] = eig(covarianceMatrix, 'vector');
     [D, I] = sort(D, 'descend');
-    k = nnz(D > 1e-14);
+    %Riga del codice originale
+    %k = nnz(D > 1e-14);
+    %Riga modificata
+    k = nnz(D > 1e-25);
     D = D(1:k);
     E = E(:,I(1:k));
     

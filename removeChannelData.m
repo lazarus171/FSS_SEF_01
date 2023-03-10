@@ -1,15 +1,11 @@
-function Data = removeChannelData(Data, Channel_path)
-% Funzione che rimuove da Data i canali presenti nel file avente path
-% 'Channel_path', la cui label compare in Data.canali
-
-%% Caricamento del file il cui path è 'Channel_path'
-    chanlocs = load(Channel_path).chanlocs;
-
-%% Rimozione dei canali indicati in Data.canali
-    Indici_eliminare = [];
-    for i = 1 : length(Data.canali)
-        Indici_eliminare = cat(1, Indici_eliminare, find(strcmp({chanlocs.labels}, Data.canali(i))==1;
-    end
-    Data.eeg(Indici_eliminare,:) = [];
+function ret_struct = removeChannelData(data_struct, Flag)
+%% Funzione che rimuove da Data i canali marcati con 0 nel Flag
+% Estrae il vettore indici da eliminare dal Flag
+    Indici_eliminare = find(Flag == 0);
+% Elimina dalla matrice dati gli indici contenuti nel vettore sopra
+% costruito
+    data_struct.eeg(Indici_eliminare,:) = [];
+% Restituisce la struttura dati modificata.
+    ret_struct = data_struct;
     
 end

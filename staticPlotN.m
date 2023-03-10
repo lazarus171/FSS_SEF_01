@@ -12,7 +12,9 @@ function fig = staticPlotN(Canali_eliminare, ave, timePlot, pretrigger, smpfq, p
         return;
     end
     eloc = load(pathLoc).chanlocs;
-    eloc = removeChannelLocs(eloc, Canali_eliminare);
+    
+    %Eliminato removeChannelLocs, riga inutile...
+    %eloc = removeChannelLocs(eloc, Canali_eliminare);
     if fix == 1
         maxmin(1) = round(min(min(ave(:,:))))+1;
         maxmin(2) = round(max(max(ave(:,:))))+1;

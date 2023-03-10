@@ -1,12 +1,13 @@
 function Flag = ch_filter(ch_Flag, ch_struct)
 %%Filtra i canali da eliminare nel ch_flag 
 %  Segna con uno 0 i canali non utili nel ch_flag
+
 %  Per semplicità si utilizzano due stringhe per i possibili nomi di canali
 %  da mantenere, tutti gli altri sono considerati da eliminare
-%Comunicazioni per l'utente
-uiwait(msgbox({'Questa funzione marca con uno zero il flag', 'di tutti i canali NON di tipo MEG o EEG', 'mantenendo eventuali zeri già presenti.'},'Attenzione!','warn', 'modal'));
+
 %Lista dei tipi di canale da marcare
 keep = {'MEG', 'EEG'};
+
 %Ciclo di scansione del ch_flag
 for i = 1 : length(ch_Flag)
     s1 = ch_struct(i).Type;
